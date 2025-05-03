@@ -42,6 +42,44 @@ public class ArbolBinario {
                 ? existeRecursivo(actual.izquierdo, valor)
                 : existeRecursivo(actual.derecho, valor);
     }
+    public boolean buscar(int valor) {
+        return buscarRec(raiz, valor) != null;
+    }
+
+    private Nodo buscarRec(Nodo actual, int valor) {
+        if (actual == null) return null;
+        if (actual.dato == valor) return actual;
+
+        Nodo encontrado = buscarRec(actual.izquierdo, valor);
+        if (encontrado == null) {
+            encontrado = buscarRec(actual.derecho, valor);
+        }
+        return encontrado;
+    }
+
+
+    public void agregarIzquierdo(int padre, int hijo) {
+        Nodo nodoPadre = buscarRec(raiz, padre);
+        if (nodoPadre != null) {
+            if (nodoPadre.izquierdo == null) {
+                nodoPadre.izquierdo = new Nodo(hijo);
+            } else {
+                System.out.println("El hijo izquierdo ya existe.");
+            }
+        }
+    }
+
+    public void agregarDerecho(int padre, int hijo) {
+        Nodo nodoPadre = buscarRec(raiz, padre);
+        if (nodoPadre != null) {
+            if (nodoPadre.derecho == null) {
+                nodoPadre.derecho = new Nodo(hijo);
+            } else {
+                System.out.println("El hijo derecho ya existe.");
+            }
+        }
+    }
+
 
     public int obtenerPeso() {
         return contarNodos(raiz);
@@ -142,6 +180,17 @@ public class ArbolBinario {
     public void borrarArbol() {
         raiz = null;
     }
+    private Nodo buscarNodo(Nodo actual, int valor) {
+        if (actual == null) return null;
+        if (actual.dato == valor) return actual;
+        Nodo encontrado = buscarNodo(actual.izquierdo, valor);
+        return (encontrado != null) ? encontrado : buscarNodo(actual.derecho, valor);
+    }
+    public String recorrerInorden() {
+        StringBuilder sb = new StringBuilder();
+        inorden(raiz, sb);
+        return sb.toString();
+    }
 
     private void inorden(Nodo nodo, StringBuilder sb) {
         if (nodo != null) {
@@ -150,6 +199,7 @@ public class ArbolBinario {
             inorden(nodo.derecho, sb);
         }
     }
+
 
     private String inorden(Nodo nodo) {
         if (nodo == null) {

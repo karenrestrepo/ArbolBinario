@@ -1,8 +1,9 @@
 package co.edu.uniquindio.arbolbinario.arbolbinariofx;
 
 public class Nodo {
-    int dato;
-    Nodo izquierdo, derecho;
+    public int dato;
+    public Nodo izquierdo;
+    public Nodo derecho;
 
     public Nodo(int dato) {
         this.dato = dato;
