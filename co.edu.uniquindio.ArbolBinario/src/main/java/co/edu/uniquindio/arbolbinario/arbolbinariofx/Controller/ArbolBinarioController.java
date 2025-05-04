@@ -78,43 +78,41 @@ public class ArbolBinarioController {
 
     @FXML
     void onAgregar(ActionEvent event) {
+        String raizTexto = txtRaiz.getText().trim();
+        String izquierdoTexto = txtNodoIzquierdo.getText().trim();
+        String derechoTexto = txtNodoDerecho.getText().trim();
+
+        if (raizTexto.isEmpty()) {
+            atxtRecorridos.setText("Debes ingresar un valor para el nodo raíz o de referencia.");
+            return;
+        }
+
         try {
-            String raizStr = txtRaiz.getText().trim();
-            String izquierdoStr = txtNodoIzquierdo.getText().trim();
-            String derechoStr = txtNodoDerecho.getText().trim();
+            int valorRaiz = Integer.parseInt(raizTexto);
 
-            if (raizStr.isEmpty()) {
-                atxtRecorridos.setText("Debes ingresar un valor para el nodo raíz o de referencia.");
-                return;
-            }
-
-            int valorRaiz = Integer.parseInt(raizStr);
-
-            // Si el árbol está vacío, se agrega la raíz
             if (arbol.estaVacio()) {
                 arbol.agregar(valorRaiz);
                 atxtRecorridos.setText("Se agregó la raíz: " + valorRaiz);
+            } else if (!arbol.buscar(valorRaiz)) {
+                atxtRecorridos.setText("El nodo raíz especificado no existe en el árbol.");
+                return;
             } else {
-                if (!arbol.buscar(valorRaiz)) {
-                    atxtRecorridos.setText("El nodo raíz especificado no existe en el árbol.");
-                    return;
-                }
-
-                // Si existe, se intentan agregar los hijos izquierdo y derecho si están presentes
-                if (!izquierdoStr.isEmpty()) {
-                    int valorIzquierdo = Integer.parseInt(izquierdoStr);
-                    arbol.agregarIzquierdo(valorRaiz, valorIzquierdo);
-                    atxtRecorridos.appendText("\nSe agregó hijo izquierdo: " + valorIzquierdo);
-                }
-
-                if (!derechoStr.isEmpty()) {
-                    int valorDerecho = Integer.parseInt(derechoStr);
-                    arbol.agregarDerecho(valorRaiz, valorDerecho);
-                    atxtRecorridos.appendText("\nSe agregó hijo derecho: " + valorDerecho);
-                }
+                atxtRecorridos.setText("");
             }
 
-            // Limpiar campos después de agregar
+            if (!izquierdoTexto.isEmpty()) {
+                int valorIzquierdo = Integer.parseInt(izquierdoTexto);
+                arbol.agregarIzquierdo(valorRaiz, valorIzquierdo);
+                atxtRecorridos.appendText("Se agregó hijo izquierdo: " + valorIzquierdo + "\n");
+            }
+
+            if (!derechoTexto.isEmpty()) {
+                int valorDerecho = Integer.parseInt(derechoTexto);
+                arbol.agregarDerecho(valorRaiz, valorDerecho);
+                atxtRecorridos.appendText("Se agregó hijo derecho: " + valorDerecho + "\n");
+            }
+
+            // Limpiar campos
             txtRaiz.clear();
             txtNodoIzquierdo.clear();
             txtNodoDerecho.clear();
@@ -122,10 +120,11 @@ public class ArbolBinarioController {
         } catch (NumberFormatException e) {
             atxtRecorridos.setText("Error: Ingresa solo números enteros.");
         }
+
         mostrarDatosArbol();
         dibujarArbol();
-
     }
+
 
 
     @FXML

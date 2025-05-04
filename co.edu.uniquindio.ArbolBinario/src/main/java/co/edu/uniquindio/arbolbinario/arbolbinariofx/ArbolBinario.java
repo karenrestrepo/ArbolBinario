@@ -98,7 +98,7 @@ public class ArbolBinario {
 
     private int altura(Nodo nodo) {
         if (nodo == null){
-            return -1;
+            return 0;
         }
         return 1 + Math.max(altura(nodo.izquierdo), altura(nodo.derecho));
     }
@@ -133,26 +133,50 @@ public class ArbolBinario {
         return contarHojasRec(nodo.izquierdo) + contarHojasRec(nodo.derecho);
     }
 
-    public int obtenerNodoMenor() {
-        return menor(raiz).dato;
+    public int nodoMenor(Nodo nodo){
+        return Nmenor(raiz).dato;
     }
 
-    private Nodo menor(Nodo nodo) {
+    private Nodo Nmenor(Nodo nodo) {
         while (nodo.izquierdo != null) {
             nodo = nodo.izquierdo;
         }
         return nodo;
     }
 
-    public int obtenerNodoMayor() {
-        return mayor(raiz).dato;
+
+    public int obtenerNodoMenor() {
+        return menor(raiz);
     }
 
-    private Nodo mayor(Nodo nodo) {
-        while (nodo.derecho != null){
-            nodo = nodo.derecho;}
-        return nodo;
+    private int menor(Nodo nodo) {
+        if (nodo == null) {
+            return Integer.MAX_VALUE; // Valor muy grande como base para comparación
+        }
+
+        int valorActual = nodo.dato;
+        int menorIzquierdo = menor(nodo.izquierdo);
+        int menorDerecho = menor(nodo.derecho);
+
+        return Math.min(valorActual, Math.min(menorIzquierdo, menorDerecho));
     }
+
+    public int obtenerNodoMayor() {
+        return mayor(raiz);
+    }
+
+    private int mayor(Nodo nodo) {
+        if (nodo == null) {
+            return Integer.MIN_VALUE;
+        }
+
+        int valorActual = nodo.dato;
+        int mayorIzquierdo = mayor(nodo.izquierdo);
+        int mayorDerecho = mayor(nodo.derecho);
+
+        return Math.max(valorActual, Math.max(mayorIzquierdo, mayorDerecho));
+    }
+
 
 
     public void eliminar(int dato) {
@@ -170,7 +194,7 @@ public class ArbolBinario {
         } else {
             if (nodo.izquierdo == null) return nodo.derecho;
             if (nodo.derecho == null) return nodo.izquierdo;
-            Nodo menor = menor(nodo.derecho);
+            Nodo menor = Nmenor(nodo.derecho);
             nodo.dato = menor.dato;
             nodo.derecho = eliminarRec(nodo.derecho, menor.dato);
         }
